@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 
-<launch>
-
-  <node name= "Choose_your_fighter" pkg= "final_assignment" type= "seleccion.py"  output= "screen"  />
-    
+<launch>    
+  <node name= "Autocontrol" pkg= "final_assignment" type= "va_solo.py" output="screen"   />
 		<!-- Code to launch move_base.launch -->	
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find final_assignment)/param/costmap_common_params.yaml" command="load" ns="global_costmap"/>

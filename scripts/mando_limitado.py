@@ -3,13 +3,13 @@
 import rospy
 import numpy
 
-from geometry_msgs.msg import Twist   
+from geometry_msgs.msg import Twist, Vector3
 from sensor_msgs.msg import LaserScan
 
 
 dist_min = 0.5
-max_ag = 720
 
+vel = Twist(Vector3(0, 0, 0), Vector3(0, 0, 0))
 
 def view(vision):
 
@@ -25,14 +25,18 @@ def view(vision):
 		dist (float): 3- aray vector that contains the minimun distance from the robot to the closer obstacle
 			        for three regions of the space: left, frotn and right (respectively)
 		
-	"""
+	""" 
 	
-	dist = [min(vision(0:max_ag/3)), min(vision(max_ag/3:2*max_ag/3)), min(vision(2*max_ag/3:(max_ag+1)))]
+	l = vision[0:240]
+	f = vision[241:480]
+	r = vision[481:721]
+	
+	dist = [min(l), min(f), min(r)]
 	
 	return dist
 	
 	
-def callbback(msg):
+def velCallBack(msg):
 
 	"""
 	Callback of the topic cmdVel
@@ -41,13 +45,9 @@ def callbback(msg):
 		msg (Twist): contains all the information regarding the topic cmdVel
 		
 	"""
-	
-	if (msg.linear.x != 0):
-		print("Robot moving")
-	elif (msg.angular.z != 0):
-		print("Robot turning")
-	else
-		print("Robot stopped")
+
+	global vel
+	vel = msg
 
 
 def laserScanCallBack(msg):
@@ -60,10 +60,9 @@ def laserScanCallBack(msg):
 		msg (LaserScan): has all the information about LaseScan topic
 		
 	"""
+	global vel
 	
 	pub = rospy.Publisher("/cmd_vel", Twist, queue_size = 10)
-	
-	vel = rospy.Subscriber("/cmd_vel", Twist, callBack)
 	
 	dist = view(msg.ranges)
 	
@@ -90,6 +89,8 @@ def node():
 	"""
 	
 	rospy.init_node('Ayuda')
+	
+	rospy.Subscriber("/cmd_vel", Twist, velCallBack)
 	
 	rospy.Subscriber("/scan", LaserScan, laserScanCallBack)
 	

@@ -3,7 +3,7 @@
 import rospy
 import os
 
-from final_assignment.srv import Goal	
+from final_assignment.srv import Goal
 
 
 def select():
@@ -39,8 +39,10 @@ def node():
 
 	rospy.init_node('Choose_your_fighter')
 	
-	while True:
-		s = select()
+	a = True
+	
+	while (a == True):
+		s = int(select())
 	
 		if s == 1:
 			print ("You have selected option 1, autonomous driving")
@@ -49,23 +51,23 @@ def node():
 			x = float(input("\tx: "))
 			y = float(input("\ty: "))
 			rospy.wait_for_service('goal')
-			goals = rospy.ServiceProxy('goal', Goal)
-			goals(x, y)
-    			
-			os.system("roslaunch final_assignment autodrive.launch")
+			g = rospy.ServiceProxy('goal', Goal)
+			g(x, y)
+			#os.system("roslaunch final_assignment autodrive.launch")
+			a = False
 			
 		elif s == 2:
-			print ("You have selected option 2, free driving")
-			
+			print ("You have selected option 2, free driving")			
 			os.system("roslaunch final_assignment freedrive.launch")
+			a = False
 
 		elif s == 3:
-			print ("You have selected option 3, assisted driving")
-			
+			print ("You have selected option 3, assisted driving")			
 			os.system("roslaunch final_assignment assdrive.launch")
+			a = False
 			
 		elif s == 0:
-			break
+			a = False
 
 		else:
 			print ("Wrong input, please enter a valid input (1, 2 or 3)")
