@@ -21,7 +21,7 @@ def robotCallBack(request):
 	x = request.x
 	y = request.y
 	
-	# Init the server
+	# Init the server and the action
 	client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
 	client.wait_for_server()
 	goal = MoveBaseGoal()
