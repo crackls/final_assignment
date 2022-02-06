@@ -45,6 +45,7 @@ def node():
 		s = int(select())
 	
 		if s == 1:
+			print ("============================================================")
 			print ("You have selected option 1, autonomous driving")
 			
 			print ("Select the goal (x, y) you want to reach")
@@ -52,20 +53,19 @@ def node():
 			y = float(input("\ty: "))
 			
 			rospy.wait_for_service('goal')
-			try:
-				g = rospy.ServiceProxy('goal', Goal)
-				req = g(x, y)
-			except rospy.ServiceException as e:
-				print("Service call failed: %s"%e)
+			goal = rospy.ServiceProxy('goal', Goal)
+			goal(x, y)
 
 			a = False
 			
 		elif s == 2:
+			print ("============================================================")
 			print ("You have selected option 2, free driving")			
 			os.system("roslaunch final_assignment freedrive.launch")
 			a = False
 
 		elif s == 3:
+			print ("============================================================")
 			print ("You have selected option 3, assisted driving")			
 			os.system("roslaunch final_assignment assdrive.launch")
 			a = False

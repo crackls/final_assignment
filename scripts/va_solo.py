@@ -3,8 +3,9 @@
 import rospy
 import actionlib
 
-from final_assignment.srv import Goal
+from final_assignment.srv import *
 from move_base_msgs.msg import *
+from actionlib_msgs.msg import *
 
 
 def robotCallBack(request):
@@ -17,18 +18,20 @@ def robotCallBack(request):
 		request (Goal): Goal service information 
 	"""
 	
-
-	pub = rospy.Publisher("/move_base", MoveBaseActionGoal, queue_size = 10)
-
+	x = request.x
+	y = request.y
+	
+	client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+	client.wait_for_server()
 	goal = MoveBaseGoal()
-    	
+	
 	goal.target_pose.header.frame_id = 'map'
 	goal.target_pose.pose.orientation.w = 1
-	goal.target_pose.pose.position.x = request.x
-	goal.target_pose.pose.position.y = request.y
-  	
-	pub.publish(goal)
-
+	goal.target_pose.pose.position.x = x
+	goal.target_pose.pose.position.y = y
+	
+	client.send_goal(goal)
+	
     	
 def node():
 
