@@ -41,11 +41,14 @@ IF (user_input == 'Autonomous driving');
 	intput(goal);
 	wait_service;
 	call_service(goal);
+	
 ESLEIF (user_input == 'Free driving');
 	execute_node(teleop_twist_keyboard);
+	
 ELSEIF (user_input == 'Assisted driving');
 	execute_node(teleop_twist_keyboard);
 	execute_node(Ayuda);
+	
 ELSEIF (user_input == 'exit');
 	exit;
 ELSE; 
@@ -79,7 +82,8 @@ IF (obstacles in front):
 IF (obstacles close to right):
 	IF (robot turning right):
 		vel = stop_turning;
+		
 publish(/cmd_vel, vel)
 ```
 
-An important remark is thatthe second option, Free driving, only needs the node teleop_twist_keyboard to be executed
+An important remark is that the second option, Free driving, only needs the node teleop_twist_keyboard to be executed
