@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node name= "Autocontrol" pkg= "final_assigment" type= "va_solo.py" output="screen"   />
+</launch>
