@@ -3,7 +3,7 @@
 import rospy
 import os
 
-from final_assignment.srv import Goal
+from final_assignment.srv import Goal, GoalRequest
 
 
 def select():
@@ -50,10 +50,14 @@ def node():
 			print ("Select the goal (x, y) you want to reach")
 			x = float(input("\tx: "))
 			y = float(input("\ty: "))
+			
 			rospy.wait_for_service('goal')
-			g = rospy.ServiceProxy('goal', Goal)
-			g(x, y)
-			#os.system("roslaunch final_assignment autodrive.launch")
+			try:
+				g = rospy.ServiceProxy('goal', Goal)
+				req = g(x, y)
+			except rospy.ServiceException as e:
+				print("Service call failed: %s"%e)
+
 			a = False
 			
 		elif s == 2:
