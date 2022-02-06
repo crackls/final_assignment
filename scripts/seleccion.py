@@ -37,6 +37,7 @@ def node():
 		
 	"""
 
+	# Init the node
 	rospy.init_node('Choose_your_fighter')
 	
 	a = True
@@ -45,6 +46,7 @@ def node():
 		s = int(select())
 	
 		if s == 1:
+			os.system("clear")
 			print ("============================================================")
 			print ("You have selected option 1, autonomous driving")
 			
@@ -52,19 +54,23 @@ def node():
 			x = float(input("\tx: "))
 			y = float(input("\ty: "))
 			
+			# waits for the server to be active
 			rospy.wait_for_service('goal')
+			# calls the server
 			goal = rospy.ServiceProxy('goal', Goal)
 			goal(x, y)
 
 			a = False
 			
 		elif s == 2:
+			os.system("clear")
 			print ("============================================================")
 			print ("You have selected option 2, free driving")			
 			os.system("roslaunch final_assignment freedrive.launch")
 			a = False
 
 		elif s == 3:
+			os.system("clear")
 			print ("============================================================")
 			print ("You have selected option 3, assisted driving")			
 			os.system("roslaunch final_assignment assdrive.launch")
